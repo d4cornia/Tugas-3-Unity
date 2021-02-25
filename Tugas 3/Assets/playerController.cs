@@ -11,8 +11,6 @@ public class playerController : MonoBehaviour
     public Vector2 force;
     public Animator animator;
     private int look;
-    public BoxCollider2D collideLeftRight;
-    public BoxCollider2D collideTopBottom;
 
 
     [SerializeField]
@@ -76,17 +74,6 @@ public class playerController : MonoBehaviour
         else if (fov.startingAngle > 170 && fov.startingAngle < 250) look = 3;
         else if (fov.startingAngle > 250 && fov.startingAngle < 330) look = 4;
         else if (fov.startingAngle < 60 || fov.startingAngle > 330) look = 2;
-
-        if (look == 2 || look == 3)
-        {
-            collideLeftRight.enabled = true;
-            collideTopBottom.enabled = false;
-        }
-        else if (look == 1 || look == 4)
-        {
-            collideLeftRight.enabled = false;
-            collideTopBottom.enabled = true;
-        }
 
         animator.SetInteger("Look", look);
         look = 0;
