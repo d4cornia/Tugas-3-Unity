@@ -1,8 +1,21 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD:Tugas 3/Assets/Animations/Player.controller.meta
+guid: 8af09aa3e77ed9244ba0549b54da8aa0
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+=======
+>>>>>>> 0c875ced8d802e3de85241f49d3a566f1040f81c
 guid: 7bafe64efc7e6f14f8fc865d2d011cd5
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 2100000
+<<<<<<< HEAD
+=======
+>>>>>>> 0c875ced8d802e3de85241f49d3a566f1040f81c:Tugas 3/Assets/Material/Fov Material.mat.meta
+>>>>>>> 0c875ced8d802e3de85241f49d3a566f1040f81c
   userData: 
   assetBundleName: 
   assetBundleVariant: 
