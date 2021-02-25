@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1637859360059628653}
   - component: {fileID: 1637859360059628654}
   - component: {fileID: 1637859360059628655}
+  - component: {fileID: -2105506493330615492}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -99,6 +100,7 @@ MonoBehaviour:
   playerObj: {fileID: 0}
   maxSpeed: 0
   force: {x: 0, y: 0}
+  animator: {fileID: -2105506493330615492}
   fov: {fileID: 6153641840777103054, guid: 280d32cfbd1b00c44abfc4d7a7fa1ab1, type: 3}
 --- !u!50 &1637859360059628655
 Rigidbody2D:
@@ -121,3 +123,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &-2105506493330615492
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637859360059628650}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6045f69ffc011024b86bd2a70fce6646, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
