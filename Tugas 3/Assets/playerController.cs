@@ -9,6 +9,10 @@ public class playerController : MonoBehaviour
     public GameObject playerObj;
     public float maxSpeed;
     public Vector2 force;
+    public Animator animator;
+    private int look;
+    public BoxCollider2D collideLeftRight;
+    public BoxCollider2D collideTopBottom;
 
 
     [SerializeField]
@@ -21,6 +25,7 @@ public class playerController : MonoBehaviour
             playerObj = GameObject.Find("Player");
             rb = playerObj.GetComponent<Rigidbody2D>();
         }
+        look = 4;
     }
 
     private void Update()
@@ -31,7 +36,9 @@ public class playerController : MonoBehaviour
     void FixedUpdate()
     {
         move();
+        walkAnim();
         updateOrientationPlayer();
+        spriteOrientation();
     }
 
     private float moveX, moveY;
@@ -40,7 +47,7 @@ public class playerController : MonoBehaviour
     {
         moveX = Input.GetAxisRaw("Horizontal");
         moveY = Input.GetAxisRaw("Vertical");
-
+        
         float xForce = moveX * maxSpeed;
         float yForce = moveY * maxSpeed;
 
@@ -61,5 +68,34 @@ public class playerController : MonoBehaviour
         Vector3 targetPosition = UtilsClass.GetWorldPositionFromUI();
         fov.setAimDirection((targetPosition - transform.position).normalized);
         fov.setOrigin(rb.transform.position);
+    }
+
+    void spriteOrientation()
+    {
+        if (fov.startingAngle > 60 && fov.startingAngle < 170) look = 1;
+        else if (fov.startingAngle > 170 && fov.startingAngle < 250) look = 3;
+        else if (fov.startingAngle > 250 && fov.startingAngle < 330) look = 4;
+        else if (fov.startingAngle < 60 || fov.startingAngle > 330) look = 2;
+
+        if (look == 2 || look == 3)
+        {
+            collideLeftRight.enabled = true;
+            collideTopBottom.enabled = false;
+        }
+        else if (look == 1 || look == 4)
+        {
+            collideLeftRight.enabled = false;
+            collideTopBottom.enabled = true;
+        }
+
+        animator.SetInteger("Look", look);
+        look = 0;
+    }
+
+    void walkAnim()
+    {
+        animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x + rb.velocity.y));
+        if (Mathf.Abs(rb.velocity.x + rb.velocity.y) > 2) animator.speed = 1.3f;
+        else animator.speed = 0.6f;
     }
 }
