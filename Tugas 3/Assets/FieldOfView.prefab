@@ -47,10 +47,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 0
   startingAngle: 0
-  fov: 50
+  fov: 40
   viewDistance: 10
+  rayCtr: 50
 --- !u!33 &-4557888090153089731
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -77,7 +78,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a0601e3a12e2e3d4f92fc3d56a41824a, type: 2}
+  - {fileID: 2100000, guid: 7bafe64efc7e6f14f8fc865d2d011cd5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

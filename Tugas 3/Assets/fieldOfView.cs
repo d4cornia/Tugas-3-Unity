@@ -15,6 +15,7 @@ public class fieldOfView : MonoBehaviour
     public float startingAngle;
     public float fov;
     public float viewDistance;
+    public int rayCtr;
 
     // Start is called before the first frame update
     void Start()
@@ -28,7 +29,6 @@ public class fieldOfView : MonoBehaviour
     {
 
         // banyak titik dalam mesh, makin banyak makin smooth
-        int rayCtr = 50; 
 
         // current angle player 
         float curAngle = startingAngle;
