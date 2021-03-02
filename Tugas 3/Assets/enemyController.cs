@@ -31,8 +31,11 @@ public class enemyController : MonoBehaviour
     public float MAX_ACCELERATION = 5;
 
     void updateMovement(Steering steering) {
-        if (steering == null) return;
-        rb.AddForce(steering.linear, ForceMode2D.Impulse);
+        if (steering == null) {
+            rb.AddForce(new Vector2(), ForceMode2D.Impulse);
+        } else {
+            rb.AddForce(steering.linear * Time.deltaTime, ForceMode2D.Impulse);
+        }
     }
 
     private void FixedUpdate() {
