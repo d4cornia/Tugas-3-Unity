@@ -65,7 +65,7 @@ public class playerController : MonoBehaviour
     {
         Vector3 targetPosition = UtilsClass.GetWorldPositionFromUI();
         fov.setAimDirection((targetPosition - transform.position).normalized);
-        fov.setOrigin(rb.transform.position);
+        fov.setOrigin(transform.position);
     }
 
     void spriteOrientation()

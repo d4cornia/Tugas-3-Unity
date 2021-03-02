@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CodeMonkey.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,9 +24,11 @@ public class enemyController : MonoBehaviour
     public Rigidbody2D rb;
     public Rigidbody2D rb_player;
 
-    //
-    private float MAX_ACCELERATION = 10;
+    [SerializeField]
+    private fieldOfView fov;
 
+    //
+    public float MAX_ACCELERATION = 5;
 
     void updateMovement(Steering steering) {
         if (steering == null) return;
@@ -33,6 +36,12 @@ public class enemyController : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        // orientasi
+
+        fov.setAimDirection(getAimDir());
+        fov.setOrigin(rb.transform.position);
+
+
         Steering steering = null;
         if(type == SEEK) {
             steering = move_seek();
@@ -58,6 +67,12 @@ public class enemyController : MonoBehaviour
         if(rb.velocity.magnitude > MAX_SPEED) {
             rb.velocity = rb.velocity.normalized * MAX_SPEED;
         }
+    }
+
+    Vector3 getAimDir()
+    {
+        Vector3 temp = new Vector3(100,0,0);
+        return temp;
     }
 
     Steering move_seek() {
