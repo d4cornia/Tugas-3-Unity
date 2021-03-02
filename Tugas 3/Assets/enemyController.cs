@@ -108,7 +108,47 @@ public class enemyController : MonoBehaviour
         return steering;
     }
     Steering move_align() {
-        return null;
+        // Parameter
+        float targetRadius = 60;
+        float slowRadius = 100;
+        float maxRotation = 100;
+        float maxAngularAcceleration = 50;
+        float timeToTarget = 0.1f;
+        // Algorithm;
+        float char_rotation = rb.transform.rotation.z;
+        float target_rotation = rb_player.transform.rotation.z;
+        float rotation = target_rotation - char_rotation; // Target-Character.orientation
+        // rotation = diakali jadi -pi pi
+        float rotationSize = Mathf.Abs(rotation);
+
+        // Jika Player tidak ada dlm radius maka Ignore
+        if(rotationSize < targetRadius) {
+            return null;
+        }
+        float targetRotation;
+        if (rotationSize > slowRadius) {
+            // Jika diatas slowradius
+            targetRotation = maxRotation;
+        } else {
+            // Jika dibawah sama dengan slowradius maka
+            targetRotation = rotationSize * maxRotation / slowRadius;
+        }
+        targetRotation *= rotation / rotationSize;
+
+        Steering steering = new Steering();
+        // Rotation
+        steering.angular = targetRotation - char_rotation;
+        steering.angular /= timeToTarget;
+        // Normalize Rotation
+        float angularAcceleration = Mathf.Abs(steering.angular);
+        if(angularAcceleration > maxAngularAcceleration) {
+            steering.angular /= angularAcceleration;
+            steering.angular *= maxAngularAcceleration;
+        }
+        // Output Linear
+        steering.linear = new Vector3();
+        // Return
+        return steering;
     }
 
     Steering move_velocity() {
