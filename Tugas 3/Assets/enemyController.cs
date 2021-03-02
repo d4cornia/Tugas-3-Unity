@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using CodeMonkey.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,9 +24,11 @@ public class enemyController : MonoBehaviour
     public Rigidbody2D rb;
     public Rigidbody2D rb_player;
 
-    //
-    private float MAX_ACCELERATION = 10;
+    [SerializeField]
+    private fieldOfView fov;
 
+    //
+    public float MAX_ACCELERATION = 5;
 
     void updateMovement(Steering steering) {
         if (steering == null) return;
@@ -33,6 +36,12 @@ public class enemyController : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        // orientasi
+
+        fov.startingAngle = GameObject.Find("Player").GetComponent<playerController>().fov.startingAngle;
+        fov.setOrigin(rb.transform.position);
+
+
         Steering steering = null;
         if(type == SEEK) {
             steering = move_seek();
