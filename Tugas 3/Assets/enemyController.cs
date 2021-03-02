@@ -25,7 +25,8 @@ public class enemyController : MonoBehaviour
     public Rigidbody2D rb_player;
 
     [SerializeField]
-    private fieldOfView fov;
+    private fovEnemy fov, revealEnemy;
+
 
     //
     public float MAX_ACCELERATION = 5;
@@ -35,16 +36,12 @@ public class enemyController : MonoBehaviour
             rb.AddForce(new Vector2(), ForceMode2D.Impulse);
         } else {
             rb.AddForce(steering.linear * Time.deltaTime, ForceMode2D.Impulse);
+            fov.setAimDirection(new Vector3(0,0,steering.angular));
+            fov.setOrigin(rb.transform.position);
         }
     }
 
     private void FixedUpdate() {
-        // orientasi
-
-        fov.startingAngle = GameObject.Find("Player").GetComponent<playerController>().fov.startingAngle;
-        fov.setOrigin(rb.transform.position);
-
-
         Steering steering = null;
         if(type == SEEK) {
             steering = move_seek();
@@ -57,6 +54,7 @@ public class enemyController : MonoBehaviour
         }
         else if (type == ALIGN) {
             steering = move_align();
+            move_align2();
         }
         else if (type == VELOCITY) {
             steering = move_velocity();
@@ -121,16 +119,17 @@ public class enemyController : MonoBehaviour
     }
     Steering move_align() {
         // Parameter
-        float targetRadius = 60;
+        float targetRadius = fov.fov;
         float slowRadius = 100;
         float maxRotation = 100;
         float maxAngularAcceleration = 50;
         float timeToTarget = 0.1f;
         // Algorithm;
-        float char_rotation = rb.transform.rotation.z;
-        float target_rotation = rb_player.transform.rotation.z;
+        float char_rotation = fov.startingAngle;
+        float target_rotation = GameObject.Find("Player").GetComponent<playerController>().fov.startingAngle;
         float rotation = target_rotation - char_rotation; // Target-Character.orientation
-        // rotation = diakali jadi -pi pi
+        rotation = rotation % 360;
+        // Debug.Log("Rotation : " + rotation + " target_rotation: " + target_rotation + " character rotation: " + char_rotation);
         float rotationSize = Mathf.Abs(rotation);
 
         // Jika Player tidak ada dlm radius maka Ignore
@@ -161,6 +160,21 @@ public class enemyController : MonoBehaviour
         steering.linear = new Vector3();
         // Return
         return steering;
+    }
+
+    void move_align2()
+    {
+        // Debug.Log("distance : " + Vector3.Distance(rb.position, rb_player.position));
+        if (Vector3.Distance(rb.position, rb_player.position) < fov.viewDistance)
+        {
+            Vector3 dirToPlayer = (rb_player.position - rb.position).normalized;
+            if (fov.hit || revealEnemy.hit)
+            {
+                fov.setAimDirection(dirToPlayer);
+            }
+        }
+        fov.hit = false;
+        revealEnemy.hit = false;
     }
 
     Steering move_velocity() {

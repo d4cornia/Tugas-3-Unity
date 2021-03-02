@@ -1,9 +1,9 @@
-﻿using System.Collections;
+﻿using CodeMonkey.Utils;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using CodeMonkey.Utils;
 
-public class fieldOfView : MonoBehaviour
+public class fovEnemy : MonoBehaviour
 {
     [SerializeField]
     private LayerMask layerMask;
@@ -16,6 +16,8 @@ public class fieldOfView : MonoBehaviour
     public float fov;
     public float viewDistance;
     public int rayCtr;
+
+    public bool hit;
 
 
     // Start is called before the first frame update
@@ -51,7 +53,7 @@ public class fieldOfView : MonoBehaviour
         {
             Vector3 vertex;
             // seperti collider tetapi raycast
-            RaycastHit2D raycastHit2D = Physics2D.Raycast(this.origin, UtilsClass.GetVectorFromAngle(curAngle), viewDistance, layerMask); 
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(this.origin, UtilsClass.GetVectorFromAngle(curAngle), viewDistance, layerMask);
             if (raycastHit2D.collider == null)
             {
                 // no hit
@@ -64,6 +66,16 @@ public class fieldOfView : MonoBehaviour
                 // jadi jika kena object maka titik render hanya di point object kena raycast 2d itu
             }
 
+            RaycastHit2D rayCollider = Physics2D.Raycast(this.origin, UtilsClass.GetVectorFromAngle(curAngle), viewDistance);
+
+            if (rayCollider.collider != null)
+            {
+                if (rayCollider.collider.gameObject.name == "Player")
+                {
+                    hit = true;
+                }
+            }
+
             vertices[vertexIndex] = vertex;
 
             if (i > 0) // karena vertex origin tidak punya prev vertex
@@ -71,7 +83,7 @@ public class fieldOfView : MonoBehaviour
                 tri[triIndex + 0] = 0; // origin
                 tri[triIndex + 1] = vertexIndex - 1; // prev vertex
                 tri[triIndex + 2] = vertexIndex; // cur vertex
-                
+
                 triIndex += 3;
             }
 
@@ -93,6 +105,4 @@ public class fieldOfView : MonoBehaviour
     {
         startingAngle = UtilsClass.GetAngleFromVectorFloat(aimDir) + fov / 2f;
     }
-
-
 }
