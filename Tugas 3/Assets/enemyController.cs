@@ -38,7 +38,7 @@ public class enemyController : MonoBehaviour
     private void FixedUpdate() {
         // orientasi
 
-        fov.setAimDirection(getAimDir());
+        fov.startingAngle = GameObject.Find("Player").GetComponent<playerController>().fov.startingAngle;
         fov.setOrigin(rb.transform.position);
 
 
@@ -67,12 +67,6 @@ public class enemyController : MonoBehaviour
         if(rb.velocity.magnitude > MAX_SPEED) {
             rb.velocity = rb.velocity.normalized * MAX_SPEED;
         }
-    }
-
-    Vector3 getAimDir()
-    {
-        Vector3 temp = new Vector3(100,0,0);
-        return temp;
     }
 
     Steering move_seek() {

@@ -14,7 +14,7 @@ public class playerController : MonoBehaviour
 
 
     [SerializeField]
-    private fieldOfView fov;
+    public fieldOfView fov;
 
     void Awake()
     {
