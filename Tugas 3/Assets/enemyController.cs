@@ -25,7 +25,7 @@ public class enemyController : MonoBehaviour
     public Rigidbody2D rb_player;
 
     [SerializeField]
-    private fovEnemy fov, revealEnemy;
+    private fovEnemy fov;
 
 
     //
@@ -37,7 +37,10 @@ public class enemyController : MonoBehaviour
             rb.AddForce(new Vector2(), ForceMode2D.Impulse);
         } else {
             rb.AddForce(steering.linear * Time.deltaTime, ForceMode2D.Impulse);
-            fov.setAimDirection(new Vector3(0,0,steering.angular));
+            if(type != 3)
+            {
+                fov.startingAngle = UtilsClass.GetAngleFromVector(rb.velocity) + fov.fov / 2f;
+            }
             fov.setOrigin(rb.transform.position);
         }
     }
@@ -168,13 +171,12 @@ public class enemyController : MonoBehaviour
         if (Vector3.Distance(rb.position, rb_player.position) < fov.viewDistance)
         {
             Vector3 dirToPlayer = (rb_player.position - rb.position).normalized;
-            if (fov.hit || revealEnemy.hit)
+            if (fov.hit)
             {
                 fov.setAimDirection(dirToPlayer);
             }
         }
         fov.hit = false;
-        revealEnemy.hit = false;
     }
 
     Steering move_velocity() {
