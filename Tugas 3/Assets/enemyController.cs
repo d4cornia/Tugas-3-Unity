@@ -29,7 +29,8 @@ public class enemyController : MonoBehaviour
 
 
     //
-    public float MAX_ACCELERATION = 5;
+    public float MAX_ACCELERATION = 1;
+    public float MAX_SPEED = 3;
 
     void updateMovement(Steering steering) {
         if (steering == null) {
@@ -64,7 +65,6 @@ public class enemyController : MonoBehaviour
         }
         updateMovement(steering);
         // Check kecepatan
-        float MAX_SPEED = 100;
         if(rb.velocity.magnitude > MAX_SPEED) {
             rb.velocity = rb.velocity.normalized * MAX_SPEED;
         }
@@ -86,13 +86,13 @@ public class enemyController : MonoBehaviour
     }
     Steering move_arrive() {
         // Parameter
-        float targetRadius = 20;
-        float slowRadius = 100;
-        float maxSpeed = 100;
-        float maxAcceleration = 50;
+        float targetRadius = 2;
+        float slowRadius = 10;
+        float maxSpeed = 4;
+        float maxAcceleration = 2;
         float timeToTarget = 0.1f;
         // Algorithm;
-        Vector2 direction = rb.position - rb_player.position;
+        Vector2 direction = rb_player.position - rb.position;
         float distance = direction.magnitude;
         if(distance < targetRadius) {
             return null;
@@ -179,11 +179,11 @@ public class enemyController : MonoBehaviour
 
     Steering move_velocity() {
         // Parameter
-        float maxAcceleration = 5;
+        float maxAcceleration = 2;
         float timeToTarget = 0.1f;
         // Algorithm;
         Steering steering = new Steering();
-        steering.linear = rb.velocity - rb_player.velocity;
+        steering.linear = rb_player.velocity - rb.velocity;
         steering.linear /= timeToTarget;
         if (steering.linear.magnitude > maxAcceleration) {
             steering.linear = steering.linear.normalized * maxAcceleration;
