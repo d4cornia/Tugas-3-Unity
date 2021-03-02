@@ -44,10 +44,10 @@ public class enemyController : MonoBehaviour
             steering = move_arrive();
         }
         else if (type == ALIGN) {
-
+            steering = move_align();
         }
         else if (type == VELOCITY) {
-
+            steering = move_velocity();
         }
         else {
             return;
@@ -80,6 +80,7 @@ public class enemyController : MonoBehaviour
         float slowRadius = 100;
         float maxSpeed = 100;
         float maxAcceleration = 50;
+        float timeToTarget = 0.1f;
         // Algorithm;
         Vector2 direction = rb.position - rb_player.position;
         float distance = direction.magnitude;
@@ -99,6 +100,7 @@ public class enemyController : MonoBehaviour
 
         Steering steering = new Steering();
         steering.linear = targetVelocity - rb.velocity;
+        steering.linear /= timeToTarget;
         if(steering.linear.magnitude > maxAcceleration) {
             steering.linear = steering.linear.normalized * maxAcceleration;
         }
@@ -110,6 +112,17 @@ public class enemyController : MonoBehaviour
     }
 
     Steering move_velocity() {
-        return null;
+        // Parameter
+        float maxAcceleration = 5;
+        float timeToTarget = 0.1f;
+        // Algorithm;
+        Steering steering = new Steering();
+        steering.linear = rb.velocity - rb_player.velocity;
+        steering.linear /= timeToTarget;
+        if (steering.linear.magnitude > maxAcceleration) {
+            steering.linear = steering.linear.normalized * maxAcceleration;
+        }
+        steering.angular = 0;
+        return steering;
     }
 }
