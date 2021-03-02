@@ -17,6 +17,8 @@ public class enemyController : MonoBehaviour
     public const int ARRIVE = 2;
     public const int ALIGN = 3;
     public const int VELOCITY = 4;
+    public Animator animator;
+    private int look;
 
     // Parameter
     public int type;
@@ -32,6 +34,32 @@ public class enemyController : MonoBehaviour
     public float MAX_ACCELERATION = 1;
     public float MAX_SPEED = 3;
 
+    private void Awake()
+    {
+        look = 4;
+    }
+
+    void spriteOrientation()
+    {
+        if (fov.startingAngle > 60 && fov.startingAngle < 170) look = 1;
+        else if (fov.startingAngle > 170 && fov.startingAngle < 250) look = 3;
+        else if (fov.startingAngle > 250 && fov.startingAngle < 330) look = 4;
+        else if (fov.startingAngle < 60 || fov.startingAngle > 330) look = 2;
+        Debug.Log(look);
+        animator.SetInteger("Look", look);
+        look = 0;
+
+
+    }
+
+    void walkAnim()
+    {
+        animator.SetFloat("Speed", Mathf.Abs(rb.velocity.x + rb.velocity.y));
+        if (Mathf.Abs(rb.velocity.x + rb.velocity.y) > 2) animator.speed = 1.3f;
+        else animator.speed = 0.6f;
+
+    }
+
     void updateMovement(Steering steering) {
         if (steering == null) {
             rb.AddForce(new Vector2(), ForceMode2D.Impulse);
@@ -39,7 +67,7 @@ public class enemyController : MonoBehaviour
             rb.AddForce(steering.linear * Time.deltaTime, ForceMode2D.Impulse);
             if(type != 3)
             {
-                fov.startingAngle = UtilsClass.GetAngleFromVector(rb.velocity) + fov.fov / 2f;
+                fov.startingAngle = UtilsClass.GetAngleFromVector(rb.velocity.normalized) + fov.fov / 2f;
             }
             fov.setOrigin(rb.transform.position);
         }
@@ -71,6 +99,9 @@ public class enemyController : MonoBehaviour
         if(rb.velocity.magnitude > MAX_SPEED) {
             rb.velocity = rb.velocity.normalized * MAX_SPEED;
         }
+
+        walkAnim();
+        spriteOrientation();
     }
 
     Steering move_seek() {
